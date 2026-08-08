@@ -1,5 +1,13 @@
 import type { ClothingCategory, Occasion, WeatherTag } from './types'
 
+/**
+ * Base URL for the backend API. In local dev this is empty — Vite's dev
+ * server proxies `/api/*` to the backend (see vite.config.ts). In production
+ * the frontend is a static build served separately from the backend, so
+ * VITE_API_BASE_URL must point at the deployed backend's public URL.
+ */
+const API_BASE = import.meta.env.VITE_API_BASE_URL ?? ''
+
 export interface TaggedMetadata {
   name: string
   category: ClothingCategory
@@ -12,10 +20,10 @@ export interface TaggedMetadata {
 
 /**
  * Sends a background-removed item photo to the backend, which forwards it to
- * Claude's vision API and returns structured closet metadata.
+ * Gemini's vision API and returns structured closet metadata.
  */
 export async function tagItemImage(imageDataUrl: string): Promise<TaggedMetadata> {
-  const res = await fetch('/api/tag-item', {
+  const res = await fetch(`${API_BASE}/api/tag-item`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ image: imageDataUrl }),

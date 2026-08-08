@@ -13,8 +13,10 @@ preferences.
   is pixel-matched to the Figma template; the app screens (closet, upload,
   item detail, outfit generator) extend the same visual language.
 - `backend/` — Express + TypeScript. A thin proxy that forwards item photos
-  to Claude's vision API to extract closet metadata, keeping the API key
-  server-side.
+  to Google Gemini's vision API to extract closet metadata, keeping the API
+  key server-side.
+- `supabase/schema.sql` — optional Postgres schema (`closet_items`, `outfits`)
+  for persisting the closet server-side instead of just in the browser.
 
 ## Getting started
 
@@ -22,12 +24,12 @@ preferences.
 
 ```bash
 cd backend
-cp .env.example .env   # add your ANTHROPIC_API_KEY
+cp .env.example .env   # add your GEMINI_API_KEY
 npm install
 npm run dev             # http://localhost:4000
 ```
 
-Without an `ANTHROPIC_API_KEY`, the app still works end to end — uploads,
+Without a `GEMINI_API_KEY`, the app still works end to end — uploads,
 background removal, and manual tagging all function — but `/api/tag-item`
 returns an error and the Upload screen falls back to a manual metadata
 form.
@@ -43,24 +45,30 @@ npm run dev              # http://localhost:5173
 Vite proxies `/api/*` requests to the backend, so both need to be running
 for AI tagging to work.
 
+**Optional — Supabase-backed storage:** without it, the closet lives in
+`localStorage` only. To persist server-side, copy `frontend/.env.example` to
+`frontend/.env`, add your `VITE_SUPABASE_URL` / `VITE_SUPABASE_ANON_KEY`, and
+run `supabase/schema.sql` in your project's SQL editor.
+
 ## How it works
 
 - **Background removal** — `@imgly/background-removal` runs a segmentation
   model fully client-side (WASM), so photos never leave the browser for
   this step.
 - **Vision tagging** — the cutout is sent to the backend, which calls
-  Claude with a forced tool call to return structured metadata: category,
-  color, pattern, style tags, occasions, and weather suitability. Users can
-  edit any of it before saving.
+  Gemini with a JSON-schema-constrained response to return structured
+  metadata: category, color, pattern, style tags, occasions, and weather
+  suitability. Users can edit any of it before saving.
 - **Outfit generation** (`frontend/src/lib/outfitEngine.ts`) — scores
   closet items against the selected occasion, weather (manual, or live via
   Open-Meteo + geolocation — no API key required), and style preferences,
   then assembles a 4-piece outfit (top + bottom, or dress; footwear; and
   outerwear or an accessory depending on weather), favoring pieces that
   haven't been worn recently.
-- **Storage** — closet items and outfit history persist to `localStorage`
-  via Zustand (`frontend/src/store/closetStore.ts`). No database yet; swap
-  in a real backend store when you're ready to add accounts/sync.
+- **Storage** (`frontend/src/store/closetStore.ts`) — writes through to
+  Supabase (`closet_items`, `outfits` tables) when `VITE_SUPABASE_URL` /
+  `VITE_SUPABASE_ANON_KEY` are set; otherwise falls back to `localStorage`
+  so the app still works with zero setup.
 
 ## Design source
 
