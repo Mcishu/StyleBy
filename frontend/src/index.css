@@ -1,0 +1,54 @@
+@import "tailwindcss";
+
+@theme {
+  /* Typography */
+  --font-serif: "Lora", "Georgia", serif;
+  --font-sans: "Inter", "Helvetica Neue", Arial, sans-serif;
+
+  /* Palette, sampled from the StyleBy Figma landing page */
+  --color-cream: #f8f4ec;
+  --color-cream-soft: #f2ede2;
+  --color-beige: #e9dfcd;
+  --color-ink: #211d17;
+  --color-ink-soft: #34302a;
+  --color-body: #4a453d;
+  --color-muted: #8a8478;
+  --color-accent: #a97c50;
+  --color-accent-soft: #c7a179;
+  --color-border: #d8d2c4;
+  --color-placeholder: #e8e4da;
+}
+
+@layer base {
+  body {
+    background-color: var(--color-cream);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+}
+
+@layer components {
+  .input {
+    width: 100%;
+    border-radius: 0.75rem;
+    border: 1px solid var(--color-border);
+    background-color: var(--color-cream);
+    padding: 0.65rem 0.9rem;
+    font-size: 0.95rem;
+    color: var(--color-ink);
+  }
+  .input:focus {
+    outline: none;
+    border-color: var(--color-accent);
+  }
+}
