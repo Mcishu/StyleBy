@@ -33,7 +33,7 @@ export function Hero() {
         </p>
 
         <div className="mt-9 flex flex-wrap items-center gap-6">
-          <Link to="/app">
+          <Link to="/login?signup=1">
             <Button className="px-7 py-4 text-center leading-snug">
               Start your
               <br />

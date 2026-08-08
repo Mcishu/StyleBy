@@ -12,7 +12,7 @@ export function FinalCTA() {
         <p className="mt-5 text-[17px] text-body">
           Free to start. No credit card, no shopping list required.
         </p>
-        <Link to="/app" className="mt-9">
+        <Link to="/login?signup=1" className="mt-9">
           <Button>Get started free</Button>
         </Link>
       </Container>

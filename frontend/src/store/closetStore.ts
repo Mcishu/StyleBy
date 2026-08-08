@@ -12,6 +12,8 @@ interface ClosetState {
   loading: boolean
   error: string | null
   fetchAll: () => Promise<void>
+  /** Clears local state — call on logout so the next account never sees stale data. */
+  reset: () => void
   addItem: (item: NewItem) => Promise<ClosetItem>
   updateItem: (id: string, patch: Partial<ClosetItem>) => Promise<void>
   removeItem: (id: string) => Promise<void>
@@ -130,6 +132,8 @@ export const useClosetStore = create<ClosetState>()(
         })
       },
 
+      reset: () => set({ items: [], outfits: [], loading: false, error: null }),
+
       addItem: async (item) => {
         if (supabase) {
           const { data, error } = await supabase
@@ -205,12 +209,10 @@ export const useClosetStore = create<ClosetState>()(
     {
       name: 'styleby-closet',
       // Supabase (when configured) is the source of truth; localStorage is
-      // just an offline cache/fallback, refreshed by fetchAll() on load.
+      // just an offline cache/fallback. AuthContext calls fetchAll()/reset()
+      // as the logged-in session changes, since that's the only place that
+      // reliably knows whose data should be loaded.
       partialize: (state) => ({ items: state.items, outfits: state.outfits }),
     },
   ),
 )
-
-if (supabase) {
-  useClosetStore.getState().fetchAll()
-}

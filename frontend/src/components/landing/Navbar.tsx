@@ -31,12 +31,12 @@ export function Navbar() {
 
         <div className="flex items-center gap-6">
           <Link
-            to="/app"
+            to="/login"
             className="hidden text-[15px] text-ink-soft transition-colors hover:text-ink sm:inline"
           >
             Log in
           </Link>
-          <Link to="/app">
+          <Link to="/login?signup=1">
             <Button>Get started</Button>
           </Link>
         </div>
