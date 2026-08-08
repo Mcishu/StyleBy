@@ -1,5 +1,6 @@
 import { Container } from '../ui/Container'
-import { Placeholder } from '../ui/Placeholder'
+import { EditorialImage } from '../ui/EditorialImage'
+import { stockPhotos } from '../../lib/stockPhotos'
 
 export function HomeFeedSection() {
   return (
@@ -19,10 +20,22 @@ export function HomeFeedSection() {
       </div>
 
       <div className="mt-14 grid grid-cols-1 gap-6 md:grid-cols-[1.6fr_1fr]">
-        <Placeholder label="App screen — home feed, today's outfit" className="min-h-[560px]" />
+        <EditorialImage
+          src={stockPhotos.homeFeedToday}
+          alt="A neatly organized walk-in closet with clothes and shoes sorted by category"
+          className="min-h-[560px] w-full"
+        />
         <div className="grid grid-rows-2 gap-6">
-          <Placeholder label="App screen — capsule overview" className="min-h-[260px]" />
-          <Placeholder label="App screen — rediscover a piece" className="min-h-[260px]" />
+          <EditorialImage
+            src={stockPhotos.capsuleOverview}
+            alt="A neutral-toned capsule of coats and sweaters on a rack"
+            className="min-h-[260px] w-full"
+          />
+          <EditorialImage
+            src={stockPhotos.rediscoverPiece}
+            alt="A pile of clothes on hangers waiting to be rediscovered"
+            className="min-h-[260px] w-full"
+          />
         </div>
       </div>
     </Container>

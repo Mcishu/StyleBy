@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom'
 import { Button } from '../ui/Button'
 import { Container } from '../ui/Container'
-import { Placeholder } from '../ui/Placeholder'
+import { EditorialImage } from '../ui/EditorialImage'
+import { stockPhotos } from '../../lib/stockPhotos'
 
 const stats = [
   { value: '40k+', label: 'closets\nstyled' },
@@ -59,9 +60,11 @@ export function Hero() {
         </div>
       </div>
 
-      <Placeholder
-        label="Product shot — app home screen or styled flat-lay"
+      <EditorialImage
+        src={stockPhotos.heroProductShot}
+        alt="A neatly styled capsule wardrobe hanging on a wooden rack"
         className="min-h-[420px] w-full"
+        eager
       />
     </Container>
   )

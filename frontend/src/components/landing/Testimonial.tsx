@@ -1,5 +1,6 @@
 import { Container } from '../ui/Container'
-import { Placeholder } from '../ui/Placeholder'
+import { EditorialImage } from '../ui/EditorialImage'
+import { stockPhotos } from '../../lib/stockPhotos'
 
 export function Testimonial() {
   return (
@@ -11,7 +12,12 @@ export function Testimonial() {
         </p>
 
         <div className="mt-8 flex items-center justify-center gap-3">
-          <Placeholder label="" compact rounded className="h-14 w-14 shrink-0" />
+          <EditorialImage
+            src={stockPhotos.testimonialAvatar}
+            alt="Renata Osei"
+            rounded
+            className="h-14 w-14 shrink-0"
+          />
           <div className="text-left">
             <p className="text-[15px] font-semibold text-ink">Renata Osei</p>
             <p className="text-sm text-muted">Styleby member since 2025</p>
